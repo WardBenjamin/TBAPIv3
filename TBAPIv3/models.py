@@ -1,24 +1,28 @@
-class Status:
-    """
-    print(json.dumps(tba.status(), indent=4))
-    {
-        "android": {
-            "latest_app_version": 4020399,
-            "min_app_version": -1
-        },
-        "backup": {},
-        "contbuild_enabled": true,
-        "current_season": 2017,
-        "down_events": [],
-        "ios": {
-            "latest_app_version": -1,
-            "min_app_version": -1
-        },
-        "is_datafeed_down": false,
-        "max_season": 2018
-    }
-    """
+"""
+MIT License
 
+Copyright (c) 2017 Benjamin Ward
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
+class Status:
     def __init__(self, json):
         # App status
         self.android = MobileApp(json.get('android'))
@@ -37,37 +41,13 @@ class Status:
 
 
 class Rankings:
-    pass
+    def __init__(self, json):
+        self.extra_stats_info = json.get('extra_stats_info')
+        self.rankings = json.get('rankings')
+        self.sort_order_info = json.get('sort_order_info')
 
 
 class Team:
-    """
-    print(json.dumps(tba.team(5549), indent=4))
-    {
-        "address": null,
-        "city": "Falls Church",
-        "country": "USA",
-        "gmaps_place_id": null,
-        "gmaps_url": null,
-        "home_championship": {
-            "2017": "St. Louis",
-            "2018": "Detroit"
-        },
-        "key": "frc5549",
-        "lat": null,
-        "lng": null,
-        "location_name": null,
-        "motto": null,
-        "name": "Nvidia/Harris Teeter/General Dynamics/Jamie Hyneman&Marshall High",
-        "nickname": "Gryphon Robotics",
-        "postal_code": "22043",
-        "rookie_year": 2015,
-        "state_prov": "Virginia",
-        "team_number": 5549,
-        "website": "https://www.frc5549.org/"
-    }
-    """
-
     def __init__(self, json):
         # Team information
         self.team_number = json.get('team_number')
@@ -98,52 +78,6 @@ class Team:
 
 
 class Event:
-    """
-    print(json.dumps(tba.event('2017vahay'), indent=4))
-    {
-        "address": "15000 Graduation Dr, Haymarket, VA 20169, USA",
-        "city": "Haymarket",
-        "country": "USA",
-        "district": {
-            "abbreviation": "chs",
-            "display_name": "Chesapeake",
-            "key": "2017chs",
-            "year": 2017
-        },
-        "division_keys": [],
-        "end_date": "2017-03-05",
-        "event_code": "vahay",
-        "event_type": 1,
-        "event_type_string": "District",
-        "first_event_id": "22495",Ri
-        "gmaps_place_id": "ChIJMbVQGL5otokRYPVVdE1euFQ",
-        "gmaps_url": "https://maps.google.com/?cid=6104732981657990496",
-        "key": "2017vahay",
-        "lat": 38.8453326,
-        "lng": -77.6298068,
-        "location_name": "Battlefield High School",
-        "name": "CHS District - Northern Virginia Event sponsored by Bechtel",
-        "parent_event_key": null,
-        "playoff_type": null,
-        "playoff_type_string": null,
-        "postal_code": "20169",
-        "short_name": "Northern Virginia",
-        "start_date": "2017-03-03",
-        "state_prov": "VA",
-        "timezone": "America/New_York",
-        "webcasts": [
-            {
-                "channel": "17752602",
-                "file": "7077017",
-                "type": "livestream"
-            }
-        ],
-        "website": "http://www.firstchesapeake.org",
-        "week": 0,
-        "year": 2017
-    }
-    """
-
     def __init__(self, json):
         # Event information
         self.key = json.get('key')
@@ -188,9 +122,9 @@ class Event:
         self.google_maps_url = json.get('gmaps_url')
 
         # Errata
-        self.webcasts = [Webcast(raw) for raw in json.get('webcasts')]
+        self.webcasts = [WebCast(raw) for raw in json.get('webcasts')]
         self.website = json.get('website')
-        
+
 
 class Award:
     def __init__(self, json):
@@ -333,7 +267,12 @@ class DistrictPoints:
 
 
 class DistrictRanking:
-    pass
+    def __init__(self, json):
+        self.event_points = json.get('event_points')
+        self.point_total = json.get('point_total')
+        self.rank = json.get('rank')
+        self.rookie_bonus = json.get('rookie_bonus')
+        self.team_key = json.get('team_key')
 
 
 class MobileApp:
@@ -348,7 +287,7 @@ class HomeChampionship:
         self.cmp2018 = json.get('2018')
 
 
-class Webcast:
+class WebCast:
     def __init__(self, json):
         self.channel = json.get('channel')
         self.file = json.get('file')

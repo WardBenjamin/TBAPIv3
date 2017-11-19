@@ -1,6 +1,32 @@
+"""
+MIT License
+
+Copyright (c) 2017 Benjamin Ward
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 from requests import get
 
-from models import Team, Event, Match, Media, Robot, Award, District, Profile, Alliance, DistrictPoints, Insights
+from TBAPIv3.models import Team, Event, Match, Media, Robot, Award, District, Profile, Alliance, DistrictPoints, \
+    Insights, \
+    Status, OPRs, Predictions, Rankings, DistrictRanking
 
 
 class TBA:
@@ -43,7 +69,7 @@ class TBA:
         Get TBA API status information.
         :return: Data on current status of the TBA API as Status object.
         """
-        return self._get('status')  # TODO: Status object
+        return Status(self._get('status'))  # TODO: Status object
 
     def team(self, team, simple=False):
         """
@@ -224,7 +250,7 @@ class TBA:
         :param team: Team to get data on.
         :return: List of Profile objects.
         """
-        return [Profile(raw) for raw in self._get('team/%s/social_media')]
+        return [Profile(raw) for raw in self._get('team/%s/social_media' % self.team_key(team))]
 
     def events(self, year, keys=False, simple=False):
         """
@@ -239,18 +265,6 @@ class TBA:
             return self._get('events/%s/keys' % year)
         else:
             return [Event(raw) for raw in self._get('events/%s%s' % (year, '/simple' if simple else ''))]
-
-    def event(self, event, simple=False):
-        """
-        Get basic information about an event.
-
-        More specific data (typically obtained with the detail_type URL parameter) can be obtained with event_alliances(), event_district_points(), event_insights(), event_oprs(), event_predictions(), and event_rankings().
-
-        :param event: Key of event for which you desire data.
-        :param simple: Get simpler data about event. Use this if you don't need the extra information provided by a standard request.
-        :return: A single Event object.
-        """
-        return Event(self._get('event/%s%s' % (event, '/simple' if simple else '')))
 
     def event_alliances(self, event):
         """
@@ -337,36 +351,14 @@ class TBA:
 
         :param event: Event key to get data on.
         :param keys: Return list of match keys only rather than full data on every match.
-        :param simple: Return simpler data on matches. Recommended if you don't need the data provided through a standard request.
+        :param simple: Return simpler data on matches. Recommended if you don't need the data provided through a
+        standard request.
         :return: List of string keys or Match objects.
         """
         if keys:
             return self._get('event/%s/matches/keys' % event)
         else:
             return [Match(raw) for raw in self._get('event/%s/matches%s' % (event, '/simple' if simple else ''))]
-
-    def match(self, key=None, year=None, event=None, type='qm', number=None, round=None, simple=False):
-        """
-        Get data on a match.
-
-        You may either pass the match's key directly, or pass `year`, `event`, `type`, `match` (the match number), and `round` if applicable (playoffs only). The event year may be specified as part of the event key or specified in the `year` parameter.
-
-        :param key: Key of match to get data on. First option for specifying a match (see above).
-        :param year: Year in which match took place. Optional; if excluded then must be included in event key.
-        :param event: Key of event in which match took place. Including year is optional; if excluded then must be specified in `year` parameter.
-        :param type: One of 'qm' (qualifier match), 'qf' (quarterfinal), 'sf' (semifinal), 'f' (final). If unspecified, 'qm' will be assumed.
-        :param number: Match number. For example, for qualifier 32, you'd pass 32. For Semifinal 2 round 3, you'd pass 2.
-        :param round: For playoff matches, you will need to specify a round.
-        :param simple: Set to True to get simpler match data. Recommended unless you need the data given in the full request.
-        :return: A single Match object.
-        """
-        if key:
-            return Match(self._get('match/%s' % key))
-        else:
-            return Match(self._get('match/%s%s_%s%s%s%s' % (
-                year if not event[0].isdigit() else '', event, type, number,
-                ('m%s' % round) if not type == 'qm' else ''),
-                                   '/simple' if simple else ''))
 
     def districts(self, year):
         """
@@ -411,6 +403,3 @@ class TBA:
             return self._get('district/%s/teams/keys' % district)
         else:
             return [Team(raw) for raw in self._get('district/%s/teams' % district)]
-
-            # TODO: Suggest media request.
-            # TODO: Use .format() instead of % notation.
