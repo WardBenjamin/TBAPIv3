@@ -8,5 +8,6 @@ setup(
     license='MIT',
     author='Benjamin Ward',
     author_email='ward.programm3r@gmail.com',
-    description='Bindings to get data from The Blue Alliance API (v3). Uses structured (instead of generated) data classes.'
+    description='Bindings to get data from The Blue Alliance API (v3). Uses structured (instead of generated) data classes.',
+    requires=['requests']
 )

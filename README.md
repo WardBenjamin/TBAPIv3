@@ -6,6 +6,25 @@ This library returns JSON data fetched from The Blue Alliance's API. Requires an
 
 Compatible with Python 3.
 
+Official documentation for the The Blue Alliance API (the official API, not these bindings) can be found [here](https://www.thebluealliance.com/apidocs)
+
+## Setup
+First, install the module:
+
+    pip3 install tbapy
+
+Then, to use these functions, you must import the `tbapiv3` module:
+
+```py
+import tbapy
+```
+
+And then instantiate an instance of the bindings class:
+
+```py
+tba = tbapy.TBA('key')
+```
+
 ## Authors
 
-This software was created and is maintained by [Benjamin Ward](https://github.com/WardBenjamin).
+This software was created and is maintained by [Benjamin Ward](https://github.com/WardBenjamin). Thanks to [Erik Boesen](https://github.com/ErikBoesen) and other contributors for the original [TBApy library](https://github.com/frc1418/tbapy).

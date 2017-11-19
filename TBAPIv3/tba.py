@@ -2,6 +2,7 @@
 MIT License
 
 Copyright (c) 2017 Benjamin Ward
+Copyright (c) 2017 Erik Boesen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +26,7 @@ SOFTWARE.
 from requests import get
 
 from TBAPIv3.models import Team, Event, Match, Media, Robot, Award, District, Profile, Alliance, DistrictPoints, \
-    Insights, \
-    Status, OPRs, Predictions, Rankings, DistrictRanking
+    Insights, Status, OPRs, Predictions, Rankings, DistrictRanking
 
 
 class TBA:
@@ -69,7 +69,7 @@ class TBA:
         Get TBA API status information.
         :return: Data on current status of the TBA API as Status object.
         """
-        return Status(self._get('status'))  # TODO: Status object
+        return Status(self._get('status'))
 
     def team(self, team, simple=False):
         """
