@@ -193,15 +193,26 @@ class Event:
         
 
 class Award:
-    pass
+    def __init__(self, json):
+        self.award_type = json.get('award_type')
+        self.event_key = json.get('event_key')
+        self.name = json.get('name')
+        self.recipient_list = json.get('recipient_list')
+        self.year = json.get('year')
 
 
 class Media:
-    pass
+    def __init__(self, json):
+        self.key = json.get('key')
+        self.type = json.get('type')
 
 
 class Robot:
-    pass
+    def __init__(self, json):
+        self.key = json.get('key')
+        self.robot_name = json.get('robot_name')
+        self.team_key = json.get('team_key')
+        self.year = json.get('year')
 
 
 class District:
@@ -213,27 +224,112 @@ class District:
 
 
 class Profile:
-    pass
+    def __init__(self, json):
+        self.details = json.get('details')
+        self.foreign_key = json.get('foreign_key')
+        self.preferred = json.get('preferred')
+        self.type = json.get('type')
 
 
 class Alliance:
-    pass
+    def __init__(self, json):
+        self.disqualified_team_keys = json.get('dq_team_keys')
+        self.score = json.get('score')
+        self.surrogate_team_keys = json.get('surrogate_team_keys')
+        self.team_keys = json.get('team_keys')
 
 
 class Insights:
-    pass
+    def __init__(self, json, year):
+        self.year = year
+
+        # If we don't have a specific detail class, just return the raw JSON.
+        if year == 2017:
+            self.qualifier = InsightsDetail2017(json.get('qual'))
+            self.playoff = InsightsDetail2017(json.get('playoff'))
+        else:
+            self.qualifier = json.get('qual')
+            self.playoff = json.get('playoff')
+
+
+class InsightsDetail2017:
+    def __init__(self, json):
+        self.average_foul_score = json.get('average_foul_score')
+        self.average_fuel_points = json.get('average_fuel_points')
+        self.average_fuel_points_auto = json.get('average_fuel_points_auto')
+        self.average_fuel_points_teleop = json.get('average_fuel_points_teleop')
+        self.average_high_goals = json.get('average_high_goals')
+        self.average_high_goals_auto = json.get('average_high_goals_auto')
+        self.average_high_goals_teleop = json.get('average_high_goals_teleop')
+        self.average_low_goals = json.get('average_low_goals')
+        self.average_low_goals_auto = json.get('average_low_goals_auto')
+        self.average_low_goals_teleop = json.get('average_low_goals_teleop')
+        self.average_mobility_points_auto = json.get('average_mobility_points_auto')
+        self.average_points_auto = json.get('average_points_auto')
+        self.average_points_teleop = json.get('average_points_teleop')
+        self.average_rotor_points = json.get('average_rotor_points')
+        self.average_rotor_points_auto = json.get('average_rotor_points_auto')
+        self.average_rotor_points_teleop = json.get('average_rotor_points_teleop')
+        self.average_score = json.get('average_score')
+        self.average_takeoff_points_teleop = json.get('average_takeoff_points_teleop')
+        self.average_win_margin = json.get('average_win_margin')
+        self.average_win_score = json.get('average_win_score')
+        self.high_kpa = json.get('high_kpa')
+        self.high_score = json.get('high_score')
+        self.kpa_achieved = json.get('kpa_achieved')
+        self.mobility_counts = json.get('mobility_counts')
+        self.rotor_1_engaged = json.get('rotor_1_engaged')
+        self.rotor_1_engaged_auto = json.get('rotor_1_engaged_auto')
+        self.rotor_2_engaged = json.get('rotor_2_engaged')
+        self.rotor_2_engaged_auto = json.get('rotor_2_engaged_auto')
+        self.rotor_3_engaged = json.get('rotor_3_engaged')
+        self.rotor_4_engaged = json.get('rotor_4_engaged')
+        self.takeoff_counts = json.get('takeoff_counts')
+        self.unicorn_matches = json.get('unicorn_matches')
 
 
 class OPRs:
-    pass
+    def __init__(self, json):
+        self.CCWMs = json.get('ccwms')
+        self.DPRs = json.get('dprs')
+        self.OPRs = json.get('oprs')
 
 
 class Predictions:
-    pass
+    def __init__(self, json):
+        self.match_prediction_stats = json.get('match_prediction_stats')
+        self.match_predictions = json.get('match_predictions')
+        self.ranking_prediction_stats = json.get('ranking_prediction_stats')
+        self.ranking_predictions = json.get('ranking_predictions')
+        self.stat_mean_vars = json.get('stat_mean_vars')
 
 
 class Match:
-    pass
+    def __init__(self, json):
+        self.key = json.get('key')
+        self.match_number = json.get('match_number')
+
+        self.comp_level = json.get('comp_level')
+        self.set_number = json.get('set_number')
+
+        self.score_breakdown = json.get('score_breakdown')
+
+        self.red_alliance = Alliance(json.get('alliances').get('red'))
+        self.blue_alliance = Alliance(json.get('alliances').get('blue'))
+        self.winning_alliance = json.get('winning_alliance')
+
+        self.time = json.get('time')
+        self.actual_time = json.get('actual_time')
+        self.predicted_time = json.get('predicted_time')
+        self.post_result_time = json.get('post_result_time')
+
+        self.videos = [Media(raw) for raw in json.get('videos')]
+
+
+class DistrictPoints:
+    def __init__(self, json):
+        self.points = json.get('points')
+        self.tiebreakers = json.get('tiebreakers')
 
 
 class DistrictRanking:
