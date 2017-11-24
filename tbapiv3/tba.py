@@ -25,7 +25,7 @@ SOFTWARE.
 
 from requests import get
 
-from TBAPIv3.models import Team, Event, Match, Media, Robot, Award, District, Profile, Alliance, DistrictPoints, \
+from .models import Team, Event, Match, Media, Robot, Award, District, Profile, Alliance, DistrictPoints, \
     Insights, Status, OPRs, Predictions, Rankings, DistrictRanking
 
 

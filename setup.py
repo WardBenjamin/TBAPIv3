@@ -1,8 +1,8 @@
 from distutils.core import setup
 
 setup(
-    name='tbapiv3',
-    version='1.2.1',
+    name='TBAPIv3',
+    version='1.3.0',
     packages=['tbapiv3'],
     url='https://github.com/WardBenjamin/TBAPIv3',
     license='MIT',
