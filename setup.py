@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='TBAPIv3',
     version='1.0.0',
-    packages=['TBAPIv3'],
+    packages=['tbapiv3'],
     url='https://github.com/WardBenjamin/TBAPIv3',
     license='MIT',
     author='Benjamin Ward',
