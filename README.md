@@ -11,18 +11,18 @@ Official documentation for the The Blue Alliance API (the official API, not thes
 ## Setup
 First, install the module:
 
-    pip3 install tbapy
+    pip3 install tbapiv3
 
 Then, to use these functions, you must import the `tbapiv3` module:
 
 ```py
-import tbapy
+import tbapiv3
 ```
 
 And then instantiate an instance of the bindings class:
 
 ```py
-tba = tbapy.TBA('key')
+tba = tbapiv3.TBA('key')
 ```
 
 ## Authors
