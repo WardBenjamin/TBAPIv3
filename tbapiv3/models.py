@@ -91,7 +91,7 @@ class Event:
         self.first_event_code = json.get('first_event_code')
         self.first_event_id = json.get('first_event_id')
 
-        self.district = District(json.get('district'))
+        self.district = None if json.get('district') is None else District(json.get('district'))
         self.division_keys = json.get('division_keys')
         self.parent_event_key = json.get('parent_event_key')
 
