@@ -241,6 +241,7 @@ class Predictions:
 class Match:
     def __init__(self, json):
         self.key = json.get('key')
+        self.event_key = json.get('event_key')
         self.match_number = json.get('match_number')
 
         self.comp_level = json.get('comp_level')
