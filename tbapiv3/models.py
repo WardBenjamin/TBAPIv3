@@ -72,7 +72,7 @@ class Team:
         self.google_maps_url = json.get('gmaps_url')
 
         # Errata
-        self.home_championship = HomeChampionship(json.get('home_championship'))
+        self.home_championship = None if json.get('home_championship') is None else HomeChampionship(json.get('home_championship'))
         self.motto = json.get('motto')
         self.website = json.get('website')
 
